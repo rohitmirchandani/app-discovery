@@ -1,0 +1,9 @@
+/* components/ChatbotEmbed.module.css */
+.chatbotContainer {
+  /* Add any styling you need */
+  position: relative;
+  width: 50%;
+  padding:20px;
+  margin:20px;
+  /* height: 500px; Adjust as needed */
+}
