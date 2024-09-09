@@ -1,13 +1,10 @@
-import React from 'react';
-
-import styles from "./Blog.module.css"
-
-const Blog = () => {
-  return (
-    <div> 
-      hello from blog
-    </div>
-  );
-};
-
-export default Blog;
+// components/BlogCard.js
+export default function BlogCard({ blog }) {
+    return (
+      <div className="card">
+        <h2>{blog.title}</h2>
+        <p>{blog.content}</p>
+      </div>
+    );
+  }
+  

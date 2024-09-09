@@ -1,14 +1,17 @@
+// components/ChatFooter/ChatFooter.js
+import styles from './ChatFooter.module.css';
 
-import styles from './ChatFooter.module.css'; // Assuming you want to use CSS Modules for styling
-
-const Chatbot = (props) => {
+const ChatFooter = ({ userName,  onPublish }) => {
+  const handlePublish = () => {
+    onPublish();
+  };
 
   return (
     <div className={styles.chatFooter}>
-      <h3>user : {props.userName}</h3>
-      <button> publish </button>
+      <h3>user: {userName}</h3>
+      <button onClick={handlePublish}>Publish</button>
     </div>
   );
 };
 
-export default Chatbot;
+export default ChatFooter;

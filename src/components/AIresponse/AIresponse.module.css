@@ -6,42 +6,34 @@
   width: 800px;
   height: 700px;
   overflow: scroll;
-  /* border : 1px solid black ; */
   
 }
 .markdownContainer::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
+  width: 12px; 
 }
 
 .markdownContainer::-webkit-scrollbar-track {
-  background: #f0f0f0; /* Background of the track */
-  border-radius: 8px; /* Rounded corners for the track */
+  background: #f0f0f0; 
+  border-radius: 8px; 
 }
 
 .markdownContainer::-webkit-scrollbar-thumb {
-  background: #888; /* Color of the scroll thumb */
-  border-radius: 8px; /* Rounded corners for the thumb */
+  background: #888; 
+  border-radius: 8px; 
 }
 
 .markdownContainer::-webkit-scrollbar-thumb:hover {
-  background: #555; /* Color of the scroll thumb when hovered */
+  background: #555; 
+}
+.tagsContainer {
+  margin-top: 20px;
 }
 
-
-/* .markdownContainer h1 {
-  color: #333;
+.tag {
+  display: inline-block;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  font-size: 14px;
 }
-
-.markdownContainer table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.markdownContainer table th, .markdownContainer table td {
-  border: 1px solid #665959;
-  padding: 8px;
-}
-
-.markdownContainer table th {
-  background-color: #aaaaaa;
-} */
