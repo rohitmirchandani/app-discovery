@@ -3,7 +3,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'; 
 import ChatFooter from '@/components/ChatFooter/ChatFooter';
-import styles from './AIresponse.module.css';
+import styles from './AIresponse.module.scss';
 import { dummyMarkdown } from '@/utils/utils';
 
 const AIresponse = ({ messages }) => {
@@ -46,6 +46,7 @@ const AIresponse = ({ messages }) => {
       {hasMarkdown && (
         <>
           <div className={styles.tagsContainer}>
+            <h3>Related Tags:</h3>
             {latestBotMessage.text.tags.map((tag, index) => (
               <span key={index} className={styles.tag}>
                 {tag}

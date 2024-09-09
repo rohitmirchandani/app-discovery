@@ -27,6 +27,7 @@ const Chatbot = ({ messages, setMessages }) => {
             body: JSON.stringify({
               user: userMessage.text,
               bridge_id: BRIDGE_ID,
+              thread_id : "hello"
             }),
           }
         );
