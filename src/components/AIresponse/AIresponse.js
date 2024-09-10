@@ -5,61 +5,66 @@ import remarkGfm from 'remark-gfm';
 import ChatFooter from '@/components/ChatFooter/ChatFooter';
 import styles from './AIresponse.module.scss';
 import { dummyMarkdown } from '@/utils/utils';
+import Head from 'next/head'
+import { toast } from 'react-toastify';
 
-const AIresponse = ({ messages }) => {
+const AIresponse = ({ blogData , isEditable, chatId}) => {
+  
   const data = dummyMarkdown;
-  const latestBotMessage = messages.filter(message => message?.type === 'bot').slice(-1)[0];
-  const hasMarkdown = latestBotMessage?.text?.markdown?.length > 0;
+  const hasMarkdown = blogData?.markdown
 
   const handlePublish = async () => {
-    const blogData = {
-      title: latestBotMessage?.text?.title || 'blog tilte',  
-      markdown: latestBotMessage?.text?.markdown || '',
-      tags: latestBotMessage?.text?.tags || '',
+    const blogDataToPublish = {
+      ...blogData, 
       createdBy: {
         userName: 'Gourav choudhary ',  
         userEmail: 'test@gmail.com',  
-      },
-    };
-
+      }, 
+      published: true
+    }
     try {
-      const response = await fetch('/api/blog', {
-        method: 'POST',
+      const response = await fetch(`/api/blog/${chatId}`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(blogData),
+        body: JSON.stringify(blogDataToPublish),
       });
+      toast.success('Blog published successfully!');
     } catch (error) {
       console.error('Failed to publish blog:', error);
-      alert('An error occurred while publishing the blog.');
+      toast.error('An error occurred while publishing the blog: ' + error);
     }
   };
-
   return (
-    <div className={styles.markdownContainer}>
+    <>
+      <Head>
+        <title>{(blogData.title || "New chat") + ' | Viasocket'}</title>
+      </Head>
+      <div className={styles.markdownContainer}>
 
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-        {hasMarkdown ? latestBotMessage.text.markdown : data}
-      </ReactMarkdown>
-
-      {hasMarkdown && (
-        <>
-          <div className={styles.tagsContainer}>
-            <h3>Related Tags:</h3>
-            {latestBotMessage.text.tags.map((tag, index) => (
-              <span key={index} className={styles.tag}>
-                {tag}
-              </span>
-            ))}
-          </div>
-          <ChatFooter
-            userName="Gourav Choudhary"  
-            onPublish={handlePublish}  
-          />
-        </>
-      )}
-    </div>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {hasMarkdown ? blogData.markdown : data}
+        </ReactMarkdown>
+        {hasMarkdown && (
+          <>
+            <div className={styles.tagsContainer}>
+              <h3>Related Tags:</h3>
+              {blogData.tags.map((tag, index) => (
+                <span key={index} className={styles.tag}>
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <ChatFooter
+              userName="Gourav Choudhary"  
+              onPublish={handlePublish}  
+              isEditable={isEditable}
+            />
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -14,7 +14,12 @@ const createBlog = async (blogData) => {
 
 const getBlogById = async(blogId) => {
   await dbConnect();
-  return await Blog.findById(blogId).lean();
+  return JSON.parse(JSON.stringify(await Blog.findById(blogId)));
 }
 
-export default { getAllBlogs, createBlog, getBlogById };
+const updateBlogById = async(blogId,blogData) => {
+  await dbConnect();
+  return JSON.parse(JSON.stringify(await Blog.findByIdAndUpdate(blogId,blogData)));
+}
+
+export default { getAllBlogs, createBlog, getBlogById, updateBlogById };

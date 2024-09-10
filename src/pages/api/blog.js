@@ -1,6 +1,6 @@
 // pages/api/blogs.js
-import dbConnect from './../../../lib/mongoDb'; // A utility to connect to MongoDB
-import Blog from './../../../models/BlogModel.js';
+import dbConnect from './../../../lib/mongoDb'; 
+import blogServices from '@/services/blogServices';
 
 export default async function handler(req, res) {
   await dbConnect();
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        const blogs = await Blog.find({});
+        const blogs = await blogServices.getAllBlogs();
         res.status(200).json({ success: true, data: blogs });
       } catch (error) {
         res.status(400).json({ success: false, error });
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
     case 'POST':
       try {
-        const blog = await Blog.create(req.body);
+        const blog = await blogServices.createBlog(req.body);
         res.status(201).json({ success: true, data: blog });
       } catch (error) {
         res.status(400).json({ success: false, error });

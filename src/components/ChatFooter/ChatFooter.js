@@ -1,7 +1,7 @@
 // components/ChatFooter/ChatFooter.js
 import styles from './ChatFooter.module.scss';
 
-const ChatFooter = ({ userName,  onPublish }) => {
+const ChatFooter = ({ userName,  onPublish, isEditable}) => {
   const handlePublish = () => {
     onPublish();
   };
@@ -9,7 +9,9 @@ const ChatFooter = ({ userName,  onPublish }) => {
   return (
     <div className={styles.chatFooter}>
       <h3>Curated by: <span>{userName}</span></h3>
-      <button onClick={handlePublish}>Publish</button>
+      { isEditable &&
+      <button onClick={handlePublish}>Publish</button> 
+      }
     </div>
   );
 };
