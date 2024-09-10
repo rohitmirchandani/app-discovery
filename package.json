@@ -9,6 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.0.2",
     "@next/env": "^14.2.8",
     "mongodb": "^6.8.1",
     "mongoose": "^8.6.1",
@@ -16,7 +19,9 @@
     "react": "^18",
     "react-dom": "^18",
     "react-markdown": "^9.0.1",
-    "remark-gfm": "^4.0.0"
+    "react-toastify": "^10.0.5",
+    "remark-gfm": "^4.0.0",
+    "sass": "^1.78.0"
   },
   "devDependencies": {
     "eslint": "^8",
