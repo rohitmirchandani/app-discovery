@@ -1,16 +1,22 @@
-// pages/api/blogs.js
-import dbConnect from './../../../lib/mongoDb'; 
+// pages/api/blogs.js 
 import blogServices from '@/services/blogServices';
 
 export default async function handler(req, res) {
-  await dbConnect();
 
-  const { method } = req;
-
+  const { method, query } = req;
+  
   switch (method) {
     case 'GET':
       try {
-        const blogs = await blogServices.getAllBlogs();
+        const { user, userEmail } = query;
+        let blogs;
+        if (user === 'true') {
+          blogs = await blogServices.getUserBlogs(userEmail);
+        } else if (user === 'false') {
+          blogs = await blogServices.getOtherBlogs(userEmail);
+        } else {
+          blogs = await blogServices.getAllBlogs();
+        }
         res.status(200).json({ success: true, data: blogs });
       } catch (error) {
         res.status(400).json({ success: false, error });

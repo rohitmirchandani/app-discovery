@@ -3,31 +3,29 @@ import { useRouter } from 'next/router';
 
 import Blog from "@/components/Blog/Blog"
 import styles from './home.module.css';
+import { createChat, fetchBlogs} from '@/utils/apiHelper';
 
 export default function Home() {
   const router = useRouter()
-  const [userCreatedBlogs, setuserCreatedBlogs] = useState([]);
+  const [userCreatedBlogs, setUserCreatedBlogs] = useState([]);
   const [otherBlogs, setOtherBlogs] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
-    async function fetchCards() {
+    async function fetchCards(userEmail) {
       try {
-        const userBlogResponse = await fetch('/api/blog');
-        const otherBlogResponse = await fetch('/api/blog');
-
-        const userBlogs = await userBlogResponse.json();
-        const otherBlogs = await otherBlogResponse.json();
-
-        setuserCreatedBlogs(userBlogs.data);
+        const userBlogs = await fetchBlogs(userEmail, true);
+        const otherBlogs = await fetchBlogs(userEmail, false);
+    
+        setUserCreatedBlogs(userBlogs.data);
         setOtherBlogs(otherBlogs.data);
       } catch (error) {
         console.error('Error fetching cards:', error);
       }
     }
 
-    fetchCards();
+    fetchCards("test@gmail.com");
   }, []);
 
   useEffect(() => {
@@ -45,27 +43,13 @@ export default function Home() {
     }
   }, [searchQuery,otherBlogs,userCreatedBlogs]);
 
-  const createChat = async () => {
-    try{
-    const res = await fetch('/api/blog', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to create chat');
-      }
-      const data = await res.json();
-      console.log(data.data._id)
+  const handleCreateChat = async () => {
+    try {
+      const data = await createChat();
       router.push(`/edit/${data.data._id}`);
     } catch (err) {
       console.error("Error creating chat:", err);
-    } 
-
+    }
   }
 
   return (
@@ -79,7 +63,7 @@ export default function Home() {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      <button className={styles.search} onClick={createChat}>new chat</button>
+      <button className={styles.search} onClick={handleCreateChat}>new chat</button>
       <div>
         {searchResults.length > 0 ? (
           <div>

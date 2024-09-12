@@ -24,6 +24,7 @@ export async function getServerSideProps(context) {
 
 export default function ChatPage({chatHistory, blogData: initBlogData}) {
   const [blogData, setBlogData] = useState(initBlogData);
+  const [oldBlog, setOldBlog] = useState('');
   const prevMessages = chatHistory.map(chat => ({
     role: chat.role,
     content: chat.role == 'user' ? chat.content : JSON.parse(chat.content)
@@ -34,6 +35,7 @@ export default function ChatPage({chatHistory, blogData: initBlogData}) {
     if(lastMessage?.role == 'assistant'){
       const content = lastMessage.content;
       if(content.markdown)
+        setOldBlog(blogData);
         setBlogData(content);
     }
   }, [messages])
@@ -41,7 +43,7 @@ export default function ChatPage({chatHistory, blogData: initBlogData}) {
   return (
     <div>
       <div className={styles.chatPagediv}>
-        <AIresponse blogData = {blogData} isEditable={true} chatId = {chatId}/>
+        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId}/>
         <Chatbot 
           messages={messages}
           setMessages={setMessages}

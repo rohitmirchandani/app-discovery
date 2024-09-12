@@ -22,4 +22,19 @@ const updateBlogById = async(blogId,blogData) => {
   return JSON.parse(JSON.stringify(await Blog.findByIdAndUpdate(blogId,blogData)));
 }
 
-export default { getAllBlogs, createBlog, getBlogById, updateBlogById };
+const getUserBlogs = async (userEmail) => {
+  await dbConnect();
+  return await Blog.find({
+    'createdBy.userEmail': userEmail,
+    'markdown': { $exists: true} // Ensure markdown is not an empty string
+  });
+}
+
+const getOtherBlogs = async (userEmail) => {
+  await dbConnect();
+  return await Blog.find({
+    'createdBy.userEmail': { $ne: userEmail },
+    'markdown': { $exists: true} 
+  });
+}
+export default { getAllBlogs, createBlog, getBlogById, updateBlogById , getUserBlogs, getOtherBlogs};
