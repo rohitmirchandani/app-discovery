@@ -34,7 +34,6 @@ export default function ChatPage({ blogData: initBlogData}) {
     ;if (!chatId) return; 
        ( async ()=>{
         const chatHistoryData = await getAllPreviousMessages(chatId)
-        debugger
         const prevMessages = chatHistoryData.data.map(chat => ({
           role: chat.role,
           content: chat.role === 'user' ? chat.content : safeParse(chat.content),
