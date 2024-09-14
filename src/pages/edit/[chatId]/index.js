@@ -4,33 +4,45 @@ import Chatbot from '@/components/ChatBot/ChatBot';
 import styles from './chatPage.module.css';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected';
+import { getAllPreviousMessages } from '@/utils/apis/chatbotapis';
 const blogService = require('@/services/blogServices');
 
 
 export async function getServerSideProps(context) {
   const {chatId} = context.params;
-  const chatHistory = await fetch(
-    `https://routes.msg91.com/api/proxy/1258584/32nghul25/api/v1/config/threads/${chatId}/${process.env.NEXT_PUBLIC_BRIDGE_ID}`,
-    {
-      headers: {
-        pauthkey: process.env.NEXT_PUBLIC_PAUTH_KEY,
-      },
-    }
-  ).then(res => res.json()).then(res => res.data);
   const blogData = await blogService.default.getBlogById(chatId); // default ko samajhna
   return {props : {
-    chatHistory, blogData
+   blogData
   }}
 }
+export function safeParse (json){
+  try {
+    return JSON.parse(json)
+  }
+  catch (e){
+    return { message:json };
+  }
+}
 
-export default function ChatPage({chatHistory, blogData: initBlogData}) {
+export default function ChatPage({ blogData: initBlogData}) {
+  const { chatId } = useRouter().query;
   const [blogData, setBlogData] = useState(initBlogData);
   const [oldBlog, setOldBlog] = useState('');
-  const prevMessages = chatHistory.map(chat => ({
-    role: chat.role,
-    content: chat.role == 'user' ? chat.content : JSON.parse(chat.content)
-  }))
-  const [messages, setMessages] = useState(prevMessages);
+
+  const [messages, setMessages] = useState([{}]);
+  useEffect(() => {
+    ;if (!chatId) return; 
+       ( async ()=>{
+        const chatHistoryData = await getAllPreviousMessages(chatId)
+        debugger
+        const prevMessages = chatHistoryData.data.map(chat => ({
+          role: chat.role,
+          content: chat.role === 'user' ? chat.content : safeParse(chat.content),
+        }));
+        setMessages(prevMessages);
+
+        })()
+  }, [chatId]);
   useEffect(() => {
     const lastMessage = messages[messages.length - 1];
     if(lastMessage?.role == 'assistant'){
@@ -40,7 +52,6 @@ export default function ChatPage({chatHistory, blogData: initBlogData}) {
         setBlogData(content);
     }
   }, [messages])
-  const { chatId } = useRouter().query;
   return (
     <Protected >
     <div>

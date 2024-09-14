@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import styles from './Chatbot.module.css';
 import { Tooltip } from '@mui/material';
+import { sendMessageApi } from '@/utils/apis/chatbotapis';
+import { safeParse } from '@/pages/edit/[chatId]';
 
 const Chatbot = ({ messages, setMessages, chatId, setBlogData }) => {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const PAUTH_KEY = process.env.NEXT_PUBLIC_PAUTH_KEY;
-  const BRIDGE_ID = process.env.NEXT_PUBLIC_BRIDGE_ID;
+ 
 
   const handleSendMessage = async () => {
     if (inputMessage.trim()) {
@@ -16,25 +17,11 @@ const Chatbot = ({ messages, setMessages, chatId, setBlogData }) => {
       setInputMessage("");
       setIsLoading(true);
       try {
-        const response = await fetch(
-          'https://routes.msg91.com/api/proxy/1258584/29gjrmh24/api/v2/model/chat/completion',
-          {
-            method: 'POST',
-            headers: {
-              'pauthkey': PAUTH_KEY,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              user: userMessage.content,
-              bridge_id: BRIDGE_ID,
-              thread_id: chatId
-            }),
-          }
-        );
 
-        const data = await response.json();
+       const data =  await sendMessageApi(userMessage.content, chatId)
+       
         if (data && data?.response?.data?.content) {
-          const botMessage = { role: 'assistant', content: JSON.parse(data?.response?.data?.content) };
+          const botMessage = { role: 'assistant', content: safeParse (data?.response?.data?.content) };
           setMessages((prevMessages) => [...prevMessages, botMessage]);
         }
       } catch (error) {
@@ -55,6 +42,7 @@ const Chatbot = ({ messages, setMessages, chatId, setBlogData }) => {
     <div className={styles.chatbotContainer}>
       <div className={styles.chatWindow}>
         {messages.map((message, index) => {
+          console.log(message)
           const isBot = message.role === 'assistant';
           const clickable = isBot && message?.content?.markdown;
           return (
