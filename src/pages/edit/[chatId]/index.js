@@ -3,6 +3,7 @@ import AIresponse from '@/components/AIresponse/AIresponse';
 import Chatbot from '@/components/ChatBot/ChatBot';
 import styles from './chatPage.module.css';
 import { useRouter } from 'next/router';
+import Protected from '@/components/protected';
 const blogService = require('@/services/blogServices');
 
 
@@ -41,6 +42,7 @@ export default function ChatPage({chatHistory, blogData: initBlogData}) {
   }, [messages])
   const { chatId } = useRouter().query;
   return (
+    <Protected >
     <div>
       <div className={styles.chatPagediv}>
         <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId}/>
@@ -53,5 +55,6 @@ export default function ChatPage({chatHistory, blogData: initBlogData}) {
         />
       </div>
     </div>
+    </Protected>
   );
 }

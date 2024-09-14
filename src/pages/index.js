@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import Blog from "@/components/Blog/Blog"
 import styles from './home.module.css';
 import { createChat, fetchBlogs} from '@/utils/apiHelper';
+import { toast } from 'react-toastify';
 
 export default function Home() {
   const router = useRouter()
@@ -48,13 +49,12 @@ export default function Home() {
       const data = await createChat();
       router.push(`/edit/${data.data._id}`);
     } catch (err) {
-      console.error("Error creating chat:", err);
+      toast.error( err.message)
     }
   }
 
   return (
     <div>
-      <h1 className={styles.homeh1}>App Discovery</h1>
 
       <input
         type="text"
