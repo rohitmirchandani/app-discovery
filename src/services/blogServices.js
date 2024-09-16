@@ -26,7 +26,7 @@ const getUserBlogs = async (userEmail) => {
   await dbConnect();
   return await Blog.find({
     'createdBy.userEmail': userEmail,
-    'markdown': { $exists: true} // Ensure markdown is not an empty string
+    'blog': { $exists: true} // Ensure markdown is not an empty string
   });
 }
 
@@ -34,7 +34,7 @@ const getOtherBlogs = async (userEmail) => {
   await dbConnect();
   return await Blog.find({
     'createdBy.userEmail': { $ne: userEmail },
-    'markdown': { $exists: true} 
+    'blog': { $exists: true} 
   });
 }
 export default { getAllBlogs, createBlog, getBlogById, updateBlogById , getUserBlogs, getOtherBlogs};

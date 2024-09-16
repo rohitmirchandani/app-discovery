@@ -67,6 +67,9 @@ export const clearUserData = () => {
     localStorage.clear();
 }
 export const getUserDataFromLocalStorage = () => {
-    const userData = localStorage.getItem('userDetail');
-    return userData ? JSON.parse(userData) : null;
-};
+    if (typeof window !== "undefined") { // Ensure this runs only on the client side
+      const userData = localStorage.getItem('userDetail');
+      return userData ? JSON.parse(userData) : null;
+    }
+    return null;
+  };

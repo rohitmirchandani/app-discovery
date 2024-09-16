@@ -5,7 +5,10 @@ import styles from './chatPage.module.css';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected';
 import { getAllPreviousMessages } from '@/utils/apis/chatbotapis';
+import { getIntegrations } from '@/services/integrationServices';
+import { getUserDataFromLocalStorage } from '@/utils/storageHelper';
 const blogService = require('@/services/blogServices');
+
 
 
 export async function getServerSideProps(context) {
@@ -28,6 +31,7 @@ export default function ChatPage({ blogData: initBlogData}) {
   const { chatId } = useRouter().query;
   const [blogData, setBlogData] = useState(initBlogData);
   const [oldBlog, setOldBlog] = useState('');
+  const [user,setUser]= useState('');
 
   const [messages, setMessages] = useState([{}]);
   useEffect(() => {
@@ -51,11 +55,14 @@ export default function ChatPage({ blogData: initBlogData}) {
         setBlogData(content);
     }
   }, [messages])
+  useEffect(()=>{
+    setUser(getUserDataFromLocalStorage());
+  },[])
   return (
     <Protected >
     <div>
       <div className={styles.chatPagediv}>
-        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId}/>
+        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId} user={user}/>
         <Chatbot 
           messages={messages}
           setMessages={setMessages}

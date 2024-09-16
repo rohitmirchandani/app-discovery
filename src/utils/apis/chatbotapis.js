@@ -3,9 +3,9 @@
 import axios from "../interceptor";
 
 export const sendMessageApi = async (content, chatId) => {
-    const response = await axios.post('/api/ask-ai',{
-            user: content,
-            thread_id: chatId,
+    const response = await axios.post('/api/ask-ai', {
+        userMessage: content,
+        chatId: chatId,
     });
 
     return response?.data?.data;
@@ -19,3 +19,8 @@ export const getAllPreviousMessages = async (chatId) => {
     return response?.data?.data;
 
 };
+
+export const compareBlogs = async (variables) => {
+    const response = await axios.post(`/api/compare-blogs`, variables)
+    return response?.data?.data;
+}

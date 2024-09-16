@@ -16,7 +16,7 @@ export async function middleware(req) {
   const { method } = req;
   const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith('/api/blog') && method === 'POST') {
+  if (pathname.startsWith('/api/blog') && (method === 'POST' || method === 'PATCH')) {
     let token = req.headers.get('Authorization');
     const decodedToken = await verifyToken(token);
     if (!token || !decodedToken) {
@@ -24,12 +24,11 @@ export async function middleware(req) {
     }
 
     req.profile = decodedToken?.user;
-    console.log(req.profile)
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/api/blog'],
+  matcher: ['/api/blog/:path*'],
 };

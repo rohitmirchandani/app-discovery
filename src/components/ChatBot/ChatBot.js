@@ -3,7 +3,6 @@ import styles from './Chatbot.module.css';
 import { Tooltip } from '@mui/material';
 import { sendMessageApi } from '@/utils/apis/chatbotapis';
 import { safeParse } from '@/pages/edit/[chatId]';
-
 const Chatbot = ({ messages, setMessages, chatId, setBlogData }) => {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +41,6 @@ const Chatbot = ({ messages, setMessages, chatId, setBlogData }) => {
     <div className={styles.chatbotContainer}>
       <div className={styles.chatWindow}>
         {messages.map((message, index) => {
-          console.log(message)
           const isBot = message.role === 'assistant';
           const clickable = isBot && message?.content?.markdown;
           return (

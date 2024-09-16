@@ -53,7 +53,7 @@ export default function index() {
                 sessionStorage.clear()
             }
             localStorage.setItem("userid", userData.id);
-            localStorage.setItem("userDetail", JSON.stringify({ name: userData.name, email: userData.email }));
+            localStorage.setItem("userDetail", JSON.stringify({ userName: userData.name, userEmail: userData.email }));
             if (process.env.NEXT_PUBLIC_NEXT_API_ENVIRONMENT === 'local') {
                 const response = await signUpOnBE({ ...userData, org_id: parseInt(queryParams['company_ref_id'], 10) })
                 // localStorage.setItem('accessToken', response?.data?.data?.token)
@@ -71,7 +71,7 @@ export default function index() {
 
     return (
         <WithAuth >
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <div id={process.env.NEXT_PUBLIC_NEXT_APP_REFERENCE_ID || "870623m1696579096651fbe18d4458"} />
             </div>
         </WithAuth>

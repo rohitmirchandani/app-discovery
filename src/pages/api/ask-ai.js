@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     switch (method) {
         case 'POST': 
             try {
-                const { content: userMessage, chatId } = req.body;
+                const { userMessage, chatId } = req.body;
 
                 // Ensure you're using server-side environment variables (without NEXT_PUBLIC)
                 const PAUTH_KEY = process.env.PAUTH_KEY;
