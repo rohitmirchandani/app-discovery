@@ -5,7 +5,7 @@ import WithAuth from '@/components/auth/WithAuth';
 import { getFromCookies, getCurrentEnvironment, removeCookie, setInCookies } from '@/utils/storageHelper'
 import { getCurrentUser, signUpOnBE } from '@/utils/apiHelper'
 
-export default function index() {
+export default function Index() {
     const router = useRouter();
     const queryParams = router.query;
     async function runEffect() {
