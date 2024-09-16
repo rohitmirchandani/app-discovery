@@ -44,8 +44,10 @@ export default function Index() {
     }
     const redirectToHomePage = async () => {
         const token = getFromCookies(getCurrentEnvironment())
+        console.log('token', token)
         if (token) {
             const userInfo = await getCurrentUser();
+            console.log('userInfo', userInfo)
             const userData = userInfo?.data[0]
             if (!userData) {
                 removeCookie(getCurrentEnvironment())
@@ -66,7 +68,7 @@ export default function Index() {
 
     useEffect(() => {
         runEffect();
-    }, [queryParams])
+    }, [queryParams, queryParams['proxy_auth_token']])
 
 
     return (
