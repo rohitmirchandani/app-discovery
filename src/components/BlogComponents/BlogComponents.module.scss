@@ -1,0 +1,37 @@
+.title{
+    font-family :var(--title-font);
+    text-align: center;
+    margin: 20px 0;
+    font-size: 1.3rem;
+}
+.introduction, .summaryList, .whatToLookFor, .conclusion, .detailedReviews{
+    line-height: 30px;
+    font-size: 1.1rem;   
+    padding: 20px;
+    h4{
+        font-size: 1.8rem;
+        margin: 15px 0;
+    }
+}
+.summaryList, .detailedReviews{
+    li{
+        display: block;
+    }
+    .listItem{
+        padding-top: 25px; 
+        padding-bottom: 25px;
+    }
+    h5{
+        font-size: 1.3rem;
+    }
+}
+.whatToLookFor{
+    .content{
+        padding-left: 40px;
+    }
+}
+.conclusion{
+    .content{
+        padding-left: 20px;
+    }
+}
