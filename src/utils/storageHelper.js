@@ -1,11 +1,16 @@
 function getDomain() {
-    const hostname = window.location.hostname
-    const parts = hostname?.split('.')
-    if (parts.length >= 2) {
-        parts.shift() // Remove the subdomain part
-        return `.${parts.join('.')}`
+    const hostname = window.location.hostname;
+    const parts = hostname?.split('.');
+    
+    if (parts.length >= 3 && parts[parts.length - 1] === 'app') {
+        // Handle cases where the domain is like app-discovery-weld.vercel.app
+        return `.${parts.slice(-3).join('.')}`; // returns ".vercel.app"
+    } else if (parts.length >= 2) {
+        // For domains like example.com
+        return `.${parts.slice(-2).join('.')}`; 
     }
-    return hostname
+    
+    return hostname;
 }
 export const getCurrentEnvironment = () => process.env.NEXT_PUBLIC_NEXT_API_ENVIRONMENT
 
@@ -52,6 +57,7 @@ function splitFromFirstEqual(str) {
 
     return [key, value]
 }
+
 export const setInCookies = (key, value) => {
     const domain = getDomain()
     let expires = ''
@@ -60,6 +66,7 @@ export const setInCookies = (key, value) => {
     date.setTime(date.getTime() + 2 * 24 * 60 * 60 * 1000)
     expires = `; expires= ${date.toUTCString()}`
     document.cookie = `${key}=${value || ''}${expires}; domain=${domain}; path=/`
+    console.log(`${key}=${value || ''}${expires}; domain=${domain}; path=/`);
 }
 
 export const clearUserData = () => {
