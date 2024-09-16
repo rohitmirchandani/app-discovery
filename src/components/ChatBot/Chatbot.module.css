@@ -17,6 +17,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 }
 
 .sentMessage {
@@ -49,9 +50,10 @@
 
 .messageInput {
   flex: 1;
-  padding: 8px;
+  padding: 12px;
   border-radius: 15px;
   border: 1px solid #ddd;
+  font-size: 1.1rem;
 }
 
 .sendButton {

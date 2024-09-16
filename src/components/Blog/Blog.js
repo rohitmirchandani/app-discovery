@@ -12,6 +12,7 @@ export default function BlogCard({ blog }) {
   return (
     <div key={blog._id} className={styles.card} onClick={handleClick}>
       <h3>{blog.title}</h3>
+      <p>{blog.blog.find(section => section.section === 'introduction')?.content}</p>
       <div className={styles.tagsContainer}>
         {blog.tags.map((tag, index) => (
           <button

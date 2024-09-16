@@ -92,7 +92,7 @@ const Chatbot = ({ messages, setMessages, chatId, setBlogData }) => {
           className={styles.messageInput}
         />
         <button onClick={handleSendMessage} className={styles.sendButton}>
-          Send
+          Ask AI
         </button>
       </div>
     </div>

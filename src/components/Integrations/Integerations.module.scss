@@ -1,22 +1,31 @@
-
-.integrationList{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    grid-gap: 15px; /* Gap between grid items */
-    .integrationItem{
-        border: 1px solid black;
-        display:flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-        // max-width: 1in;
-        .integrationIcons{
-            display: flex;
-            width : 100%;
-            gap: 10px;
+.integrationDiv{
+    padding: 40px;
+    .integrationList{
+        padding: 20px 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-gap: 15px; /* Gap between grid items */
+        .integrationItem{
+            border-radius: 10px;
+            border: 1px solid black;
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            font-size: 1.3rem;
+            // max-width: 1in;
+            .integrationIcons{
+                margin-bottom: 20px;
+                display: flex;
+                width : 100%;
+                gap: 10px;
+            }
         }
-    }
-    .integrationLink{
-        cursor: pointer;
+        .integrationLink{
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+        }
     }
 }

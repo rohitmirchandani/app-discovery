@@ -55,15 +55,16 @@ export default function Home() {
   return (
     <div>
       <h1 className={styles.homeh1}>App Discovery</h1>
-
-      <input
-        type="text"
-        className={styles.search}
-        placeholder="Search blogs..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      <button className={styles.search} onClick={handleCreateChat}>new chat</button>
+      <div className = {styles.postHeader}>
+        <input
+          type="text"
+          className={styles.search}
+          placeholder="Search Apps..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button className={styles.newChat} onClick={handleCreateChat}>new chat</button>
+      </div>
       <div>
         {searchResults.length > 0 ? (
           <div>
@@ -77,7 +78,7 @@ export default function Home() {
         ) : (
           <>
             <section className={styles.Homesection}>
-              <h2 className={styles.homeh2}>User</h2>
+              <h2 className={styles.homeh2}>Your Categories</h2>
               <div className={styles.cardsGrid}>
                 {userCreatedBlogs.map(card => (
                   <Blog key={card._id} blog={card} />
@@ -86,7 +87,7 @@ export default function Home() {
             </section>
 
             <section className={styles.Homesection}>
-              <h2 className={styles.homeh2}>All Blogs</h2>
+              <h2 className={styles.homeh2}>Top Categories</h2>
               <div className={styles.cardsGrid}>
                 {otherBlogs.map(card => (
                   <Blog key={card._id} blog={card} />

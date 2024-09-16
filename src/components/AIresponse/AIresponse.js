@@ -1,7 +1,5 @@
 // components/AIresponse/AIresponse.js
 import React, { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm'; 
 import { useRouter } from 'next/router';
 import ChatFooter from '@/components/ChatFooter/ChatFooter';
 import styles from './AIresponse.module.scss';
@@ -69,10 +67,6 @@ const AIresponse = ({ blogData ,oldBlog, isEditable, chatId}) => {
         <title>{(blogData?.title || "New chat") + ' | Viasocket'}</title>
       </Head>
       <div className={styles.markdownContainer}>
-      
-        {/* <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {hasMarkdown ? blogData.markdown : data}
-        </ReactMarkdown> */}
         {!hasMarkdown && Components['dummy']()}
         {hasMarkdown && (
           <>
