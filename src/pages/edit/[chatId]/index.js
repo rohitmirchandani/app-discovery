@@ -3,6 +3,7 @@ import AIresponse from '@/components/AIresponse/AIresponse';
 import Chatbot from '@/components/ChatBot/ChatBot';
 import styles from './chatPage.module.css';
 import { useRouter } from 'next/router';
+import { getIntegrations } from '@/services/integrationServices';
 const blogService = require('@/services/blogServices');
 
 

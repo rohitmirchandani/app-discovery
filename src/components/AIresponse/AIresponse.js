@@ -5,17 +5,16 @@ import remarkGfm from 'remark-gfm';
 import { useRouter } from 'next/router';
 import ChatFooter from '@/components/ChatFooter/ChatFooter';
 import styles from './AIresponse.module.scss';
-import { dummyMarkdown } from '@/utils/utils';
 import Head from 'next/head'
 import { toast } from 'react-toastify';
 import { compareBlogs, publishBlog, updateBlog } from '@/utils/apiHelper';
 import Popup from '../PopupModel/PopupModel';
+import Components from '../BlogComponents/BlogComponents';
 
 const AIresponse = ({ blogData ,oldBlog, isEditable, chatId}) => {
   const [isPopupOpen,setIsPopUpOpen]=useState(false);
   const router = useRouter()
-  const data = dummyMarkdown;
-  const hasMarkdown = blogData?.markdown;
+  const hasMarkdown = blogData?.blog;
 
   const handlePublish = async () => {
     const blogDataToPublish = {
@@ -24,7 +23,8 @@ const AIresponse = ({ blogData ,oldBlog, isEditable, chatId}) => {
         userName: 'Gourav choudhary ',  
         userEmail: 'test1@gmail.com',  
       }, 
-      published: true
+      published: true,
+      apps : blogData.blog.find(section => section.section ==='summaryList').content.map(app => app.name)
     }
     try {
       const res=await compareBlogs(
@@ -69,12 +69,16 @@ const AIresponse = ({ blogData ,oldBlog, isEditable, chatId}) => {
         <title>{(blogData?.title || "New chat") + ' | Viasocket'}</title>
       </Head>
       <div className={styles.markdownContainer}>
-
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+      
+        {/* <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {hasMarkdown ? blogData.markdown : data}
-        </ReactMarkdown>
+        </ReactMarkdown> */}
+        {!hasMarkdown && Components['dummy']()}
         {hasMarkdown && (
           <>
+            {
+              blogData.blog.map(({section, content}) => Components[section]?.(content))
+            }
             <div className={styles.tagsContainer}>
               <h3>Related Tags:</h3>
               {blogData?.tags?.map((tag, index) => (

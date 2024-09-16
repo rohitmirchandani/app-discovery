@@ -3,8 +3,9 @@ import mongoose from 'mongoose';
 
 const BlogSchema = new mongoose.Schema({
   title: String,
-  markdown: String,
+  blog: Object,
   tags: Array, 
+  apps: Array,
   createdAt: {
     type: Date,
     default: new Date(),
