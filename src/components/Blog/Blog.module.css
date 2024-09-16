@@ -1,29 +1,36 @@
 .card {
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 16px;
+  padding: 2rem;
   font-family: serif;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
+  max-width: 12in;
+  margin-bottom: 1.2rem;
 }
 
 .card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 .card h3 {
   margin-top: 0;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: #333;
+  padding: 10px 0;
 }
 
 .card p {
   margin: 0;
   color: #666;
+  line-height: 20px;
+  padding: 10px 0;
+  font-size: 1.1rem;
 }
 .tagsContainer {
+  padding: 10px 0;
   margin-top: 1px;
 }
 
@@ -35,7 +42,6 @@
   background-color: #e0e0e0;
   font-style: italic;
   color: #333;
-  font-size: 0.65rem;
   border: none;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;

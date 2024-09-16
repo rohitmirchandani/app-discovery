@@ -9,6 +9,7 @@
   width: 90%;
   height: 90%;
   border: 1px solid #ccc;
+  margin: auto;
 
 }
 .markdownContainer::-webkit-scrollbar {
@@ -30,19 +31,20 @@
 }
 .tagsContainer {
   margin-top: 20px;
+  padding: 30px;
   h3{
     font-style: italic;
     font-weight: 100;
-    font-size: 1rem;
+    font-size: 1.3rem;
     color: #999;
   }
 }
 
 .tag {
   display: inline-block;
-  background-color: #f0f0f0;
-  border-radius: 3px;
-  padding: 5px 10px;
-  margin: 0 5px;
-  font-size: 14px;
+  background-color: #e0e0e0;
+  border-radius: 30px;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  font-size: 1.1rem;
 }
