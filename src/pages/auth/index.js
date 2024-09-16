@@ -52,8 +52,8 @@ export default function index() {
                 localStorage.clear()
                 sessionStorage.clear()
             }
-            localStorage.setItem("userid", userData.id);
-            localStorage.setItem("userDetail", JSON.stringify({ userName: userData.name, userEmail: userData.email }));
+            // localStorage.setItem("userid", userData.id);
+            localStorage.setItem("userDetail", JSON.stringify({ name: userData.name, email: userData.email, id: userData.id }));
             if (process.env.NEXT_PUBLIC_NEXT_API_ENVIRONMENT === 'local') {
                 const response = await signUpOnBE({ ...userData, org_id: parseInt(queryParams['company_ref_id'], 10) })
                 // localStorage.setItem('accessToken', response?.data?.data?.token)

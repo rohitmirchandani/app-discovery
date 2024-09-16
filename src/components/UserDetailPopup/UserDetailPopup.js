@@ -38,12 +38,6 @@ const UserDetail = ({ isOpen, onClose }) => {
         onClose();
         router.push("/");
     };
-    const handleSignIn = async() => {
-        await router.push("/auth");
-        router.reload()
-        onClose();
-
-    };
 
     if (!isOpen) return null;
 
@@ -51,15 +45,11 @@ const UserDetail = ({ isOpen, onClose }) => {
         <>
             <div ref={popupRef} className={styles.popupContainer}>
                 <div className={styles.userDetails}>
-                    {user ? (
                         <>
-                            <p><b>{user.userName}</b></p>
-                            <p><b>{user.userEmail}</b></p>
+                            <p><b>{user?.name}</b></p>
+                            <p><b>{user?.email}</b></p>
                             <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
                         </>
-                    ) :
-                        <button className={styles.signInButton} onClick={handleSignIn}> SignIn </button>
-                    }
                 </div>
             </div>
         </>

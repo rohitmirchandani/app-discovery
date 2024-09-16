@@ -17,10 +17,7 @@ const AIresponse = ({ blogData, oldBlog, isEditable, chatId ,user }) => {
   const handlePublish = async () => {
     const blogDataToPublish = {
       ...blogData,
-      createdBy: {
-        userName: user?.userName,  
-        userEmail: user?.userEmail,  
-      }, 
+      createdBy: user?.id, 
       published: true,
       apps : blogData.blog.find(section => section.section ==='summaryList').content.map(app => app.name)
     }
@@ -46,10 +43,7 @@ const AIresponse = ({ blogData, oldBlog, isEditable, chatId ,user }) => {
   const handleNewPublish = async () => {
     const blogDataToPublish = {
       ...blogData,
-      createdBy: {
-        userName: user?.userName,
-        userEmail: user?.userEmail,
-      },
+      createdBy: user?.id,
       published: true
     };
     try {
@@ -84,7 +78,7 @@ const AIresponse = ({ blogData, oldBlog, isEditable, chatId ,user }) => {
               ))}
             </div>
             <ChatFooter
-              userName={user?.userName}
+              userName={user?.name}
               onPublish={handlePublish}
               isEditable={isEditable}
             />

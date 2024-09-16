@@ -2,12 +2,15 @@ import blogService from '@/services/blogServices';
 import AIresponse from '@/components/AIresponse/AIresponse';
 import Integrations from '@/components/Integrations/Integrations';
 import { getIntegrations, getPluginsByName } from '@/services/integrationServices';
+import { getUserById } from '@/utils/apiHelper';
 export async function getServerSideProps(context) {
   const { blogId } = context.params;
   const props = {};
   try {
     const blog = await blogService.getBlogById(blogId);
+    const user = await getUserById(blog?.createdBy);
     props.blog = blog;
+    props.user=user;
     try{
       const integrations = await getIntegrations(blog.apps);
       Object.assign(props, integrations);
@@ -20,11 +23,11 @@ export async function getServerSideProps(context) {
   return { props };
 }
 
-export default function ChatPage({ blog, integrations, pluginData }) {
+export default function ChatPage({ blog, integrations, pluginData ,user}) {
   return (
     <div>
       <div>
-        <AIresponse blogData={blog} user={blog.createdBy}/>
+        <AIresponse blogData={blog} user={user}/>
       </div>
       <Integrations integrations = {integrations} pluginData = {pluginData}/>
     </div>

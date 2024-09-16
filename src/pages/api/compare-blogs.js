@@ -6,7 +6,6 @@ export default async function handler(req, res) {
     }
   
     const { variables } = req.body;
-    console.log(variables)
   
     try {
       const response = await fetch(

@@ -1,20 +1,27 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import Blog from "@/components/Blog/Blog"
+import Blog from '@/components/Blog/Blog';
 import styles from './home.module.css';
-import { createChat, fetchBlogs} from '@/utils/apiHelper';
+import { createChat, fetchBlogs } from '@/utils/apiHelper';
 import { toast } from 'react-toastify';
+import { getUserDataFromLocalStorage } from '@/utils/storageHelper';
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
   const [userCreatedBlogs, setUserCreatedBlogs] = useState([]);
   const [otherBlogs, setOtherBlogs] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [user, setUser] = useState('');
+  const [loading, setLoading] = useState(true);  // Loader state
 
+  // Fetch blogs
   useEffect(() => {
-    async function fetchCards(userEmail) {
+    async function fetchBlogsData(userEmail) {
+      setLoading(true);
+        
+
       try {
         const userBlogs = await fetchBlogs(userEmail, true);
         const otherBlogs = await fetchBlogs(userEmail, false);
@@ -22,36 +29,57 @@ export default function Home() {
         setUserCreatedBlogs(userBlogs.data);
         setOtherBlogs(otherBlogs.data);
       } catch (error) {
-        console.error('Error fetching cards:', error);
+        console.error('Error fetching blogs:', error);
+        toast.error('Failed to fetch blogs.');
+      } finally {
+        setLoading(false);  // Stop loader
       }
     }
 
-    fetchCards("test@gmail.com");
-  }, []);
+      fetchBlogsData(user?.email || '');
+  }, [user]);
 
+  // Search filtering
   useEffect(() => {
     if (searchQuery) {
-      const filteredResults = [
-        ...userCreatedBlogs,
-        ...otherBlogs,
-      ].filter(card =>
-        JSON.stringify(card).toLowerCase().includes(searchQuery.toLowerCase())
+      const combinedBlogs = [...userCreatedBlogs, ...otherBlogs];
+      const filteredResults = combinedBlogs.filter((blog) =>
+        JSON.stringify(blog).toLowerCase().includes(searchQuery.toLowerCase())
       );
-
       setSearchResults(filteredResults);
     } else {
       setSearchResults([]);
     }
-  }, [searchQuery,otherBlogs,userCreatedBlogs]);
+  }, [searchQuery, userCreatedBlogs, otherBlogs]);
+  useEffect(()=>{
+    setUser(getUserDataFromLocalStorage());
 
+  },[])
+
+  // Handle chat creation
   const handleCreateChat = async () => {
     try {
-      const data = await createChat();
-      router.push(`/edit/${data.data._id}`);
+      const { data } = await createChat();
+      await router.push(`/edit/${data._id}`);
     } catch (err) {
-      toast.error( err.message)
+      await router.push(`/auth`);
+      toast.error(err.message);
     }
-  }
+  };
+
+  // Conditional blog rendering
+  const renderBlogsSection = (blogs, title) => (
+    blogs.length > 0 && (
+      <section className={styles.Homesection}>
+        <h2 className={styles.homeh2}>{title}</h2>
+        <div className={styles.cardsGrid}>
+          {blogs.map((blog) => (
+            <Blog key={blog._id} blog={blog} />
+          ))}
+        </div>
+      </section>
+    )
+  );
 
   return (
     <div>
@@ -66,34 +94,23 @@ export default function Home() {
         <button className={styles.newChat} onClick={handleCreateChat}>new chat</button>
       </div>
       <div>
-        {searchResults.length > 0 ? (
+        {loading ? (
+          <div className={styles.spinnerContainer}>
+            <div className={styles.spinner}></div>
+          </div>
+        ) : searchResults.length > 0 ? (
           <div>
             <h2 className={styles.homeh2}>Search Results</h2>
             <div className={styles.cardsGrid}>
-            {searchResults.map(card => (
-              <Blog key={card._id} blog={card} />
-            ))}
+              {searchResults.map((blog) => (
+                <Blog key={blog._id} blog={blog} />
+              ))}
             </div>
           </div>
         ) : (
           <>
-            <section className={styles.Homesection}>
-              <h2 className={styles.homeh2}>Your Categories</h2>
-              <div className={styles.cardsGrid}>
-                {userCreatedBlogs.map(card => (
-                  <Blog key={card._id} blog={card} />
-                ))}
-              </div>
-            </section>
-
-            <section className={styles.Homesection}>
-              <h2 className={styles.homeh2}>Top Categories</h2>
-              <div className={styles.cardsGrid}>
-                {otherBlogs.map(card => (
-                  <Blog key={card._id} blog={card} />
-                ))}
-              </div>
-            </section>
+            {renderBlogsSection(userCreatedBlogs, 'User Blogs')}
+            {renderBlogsSection(otherBlogs, 'All Blogs')}
           </>
         )}
       </div>
