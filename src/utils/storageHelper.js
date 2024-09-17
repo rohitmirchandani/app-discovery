@@ -66,7 +66,6 @@ export const setInCookies = (key, value) => {
     date.setTime(date.getTime() + 2 * 24 * 60 * 60 * 1000)
     expires = `; expires= ${date.toUTCString()}`
     document.cookie = `${key}=${value || ''}${expires}; domain=${domain}; path=/`
-    console.log(`${key}=${value || ''}${expires}; domain=${domain}; path=/`);
 }
 
 export const clearUserData = () => {

@@ -18,13 +18,13 @@ export default function Home() {
 
   // Fetch blogs
   useEffect(() => {
-    async function fetchBlogsData(userEmail) {
+    async function fetchBlogsData(userId) {
       setLoading(true);
         
 
       try {
-        const userBlogs = await fetchBlogs(userEmail, true);
-        const otherBlogs = await fetchBlogs(userEmail, false);
+        const userBlogs = await fetchBlogs(userId, true);
+        const otherBlogs = await fetchBlogs(userId, false);
     
         setUserCreatedBlogs(userBlogs.data);
         setOtherBlogs(otherBlogs.data);
@@ -35,8 +35,7 @@ export default function Home() {
         setLoading(false);  // Stop loader
       }
     }
-
-      fetchBlogsData(user?.email || '');
+      fetchBlogsData(user?.id || '');
   }, [user]);
 
   // Search filtering

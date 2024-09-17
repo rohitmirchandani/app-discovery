@@ -55,9 +55,9 @@ export const createChat = async () => {
 
   return res.json();
 };
-export const fetchBlogs = async (userEmail, isUserSpecific) => {
+export const fetchBlogs = async (userId, isUserSpecific) => {
   const queryParam = isUserSpecific ? 'true' : 'false';
-  const res = await fetch(`/api/blog?user=${queryParam}&userEmail=${encodeURIComponent(userEmail)}`);
+  const res = await fetch(`/api/blog?user=${queryParam}&userId=${encodeURIComponent(userId)}`);
   
   if (!res.ok) {
     throw new Error(`Failed to fetch ${isUserSpecific ? 'user' : 'other'} blogs`);

@@ -14,7 +14,7 @@ export default function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
         setIsLoggedIn(getUserDataFromLocalStorage() ? true : false)
-    })
+    },[])
 
     const toggleUserInfo = () => {
         setShowUserInfo(!showUserInfo);

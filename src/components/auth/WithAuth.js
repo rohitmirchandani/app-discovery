@@ -16,7 +16,6 @@ function WithAuth({ children }) {
           localStorage.setItem(key, value);  // Store token in localStorage
           key = domain;
         }
-        console.log({key}, {value},"log in withauth");
         setInCookies(key, value);  // Store token in cookies
       }
     });
