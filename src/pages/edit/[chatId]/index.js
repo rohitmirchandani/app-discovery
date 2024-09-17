@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+"useclient";
+export const runtime = 'edge'; // Ensures the route is run on the Edge Runtimeimport { useEffect, useState } from 'react';
 import AIresponse from '@/components/AIresponse/AIresponse';
 import Chatbot from '@/components/ChatBot/ChatBot';
 import styles from './chatPage.module.css';

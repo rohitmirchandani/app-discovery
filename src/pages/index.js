@@ -1,3 +1,6 @@
+"useclient";
+export const runtime = 'edge'; // Ensures the route is run on the Edge Runtime
+
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
