@@ -1,3 +1,5 @@
+export const runtime = 'edge'; // Ensures the route is run on the Edge Runtime
+
 import fetch from 'node-fetch';
 
 
