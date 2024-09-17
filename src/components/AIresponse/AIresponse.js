@@ -9,7 +9,7 @@ import {  publishBlog, updateBlog } from '@/utils/apiHelper';
 import Popup from '../PopupModel/PopupModel';
 import Components from '../BlogComponents/BlogComponents';
 import { compareBlogs } from '@/utils/apis/chatbotapis';
-const AIresponse = ({ blogData, oldBlog, isEditable, chatId ,user }) => {
+const AIresponse = ({ blogData, oldBlog, isEditable, chatId, user, setOldBlog }) => {
   const [isPopupOpen, setIsPopUpOpen] = useState(false);
   const router = useRouter()
   const hasMarkdown = blogData?.blog;
@@ -25,12 +25,13 @@ const AIresponse = ({ blogData, oldBlog, isEditable, chatId ,user }) => {
       const res = await compareBlogs(
         {
           variables : {
-            current_blog: JSON.stringify(oldBlog?.blog),
-            updated_blog: JSON.stringify(blogData?.blog),
+            current_blog: (oldBlog?.blog),
+            updated_blog: (blogData?.blog),
           }
         })
-      if (!oldBlog || JSON.parse(res?.response?.data?.content).ans === 'yes'){
+      if (!oldBlog || JSON.parse(res?.content)?.ans === 'yes'){
         await updateBlog(chatId, blogDataToPublish);
+        setOldBlog(blogData);
         toast.success('Blog updated successfully!');
       } else {
         setIsPopUpOpen(true);
@@ -48,6 +49,7 @@ const AIresponse = ({ blogData, oldBlog, isEditable, chatId ,user }) => {
     };
     try {
       const data = await publishBlog(blogDataToPublish);
+      setOldBlog(blogData);
       router.push(`/edit/${data.data._id}`);
       toast.success('Blog published successfully!');
     } catch (error) {

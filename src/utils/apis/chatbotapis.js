@@ -22,5 +22,5 @@ export const getAllPreviousMessages = async (chatId) => {
 
 export const compareBlogs = async (variables) => {
     const response = await axios.post(`/api/compare-blogs`, variables)
-    return response?.data?.data;
+    return response?.data?.response?.data;
 }

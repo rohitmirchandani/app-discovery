@@ -5,7 +5,7 @@ import Blog from '@/components/Blog/Blog';
 import styles from './home.module.css';
 import { createChat, fetchBlogs } from '@/utils/apiHelper';
 import { toast } from 'react-toastify';
-import { getUserDataFromLocalStorage } from '@/utils/storageHelper';
+import { useUser } from '@/context/UserContext';
 
 export default function Home() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function Home() {
   const [otherBlogs, setOtherBlogs] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [user, setUser] = useState('');
+  const {user, setUser} = useUser();
   const [loading, setLoading] = useState(true);  // Loader state
 
   // Fetch blogs
@@ -50,10 +50,6 @@ export default function Home() {
       setSearchResults([]);
     }
   }, [searchQuery, userCreatedBlogs, otherBlogs]);
-  useEffect(()=>{
-    setUser(getUserDataFromLocalStorage());
-
-  },[])
 
   // Handle chat creation
   const handleCreateChat = async () => {

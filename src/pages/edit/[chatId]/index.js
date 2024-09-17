@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import Protected from '@/components/protected';
 import { getAllPreviousMessages } from '@/utils/apis/chatbotapis';
 import { getIntegrations } from '@/services/integrationServices';
-import { getUserDataFromLocalStorage } from '@/utils/storageHelper';
+import { useUser } from '@/context/UserContext';
 const blogService = require('@/services/blogServices');
 
 
@@ -31,7 +31,7 @@ export default function ChatPage({ blogData: initBlogData}) {
   const { chatId } = useRouter().query;
   const [blogData, setBlogData] = useState(initBlogData);
   const [oldBlog, setOldBlog] = useState('');
-  const [user,setUser]= useState('');
+  const {user}= useUser();
 
   const [messages, setMessages] = useState([{}]);
   useEffect(() => {
@@ -50,19 +50,15 @@ export default function ChatPage({ blogData: initBlogData}) {
     const lastMessage = messages[messages.length - 1];
     if(lastMessage?.role == 'assistant'){
       const content = lastMessage.content;
-      if(content.markdown)
-        setOldBlog(blogData);
+      if(content?.blog)
         setBlogData(content);
     }
   }, [messages])
-  useEffect(()=>{
-    setUser(getUserDataFromLocalStorage());
-  },[])
   return (
     <Protected >
     <div>
       <div className={styles.chatPagediv}>
-        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId} user={user}/>
+        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId} user={user} setOldBlog={setOldBlog}/>
         <Chatbot 
           messages={messages}
           setMessages={setMessages}

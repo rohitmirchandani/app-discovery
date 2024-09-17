@@ -8,7 +8,7 @@ const ChatFooter = ({ userName,  onPublish, isEditable}) => {
 
   return (
     <div className={styles.chatFooter}>
-      <h3>Curated by: <span>{userName}</span></h3>
+      <h3>Created by: <span>{userName}</span></h3>
       { isEditable &&
       <button onClick={handlePublish}>Publish</button> 
       }
