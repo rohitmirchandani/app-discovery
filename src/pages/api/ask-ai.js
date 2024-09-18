@@ -1,3 +1,6 @@
+export const config = {
+  runtime: 'edge', // Switch to edge function to get a 60-second timeout
+};
 import fetch from 'node-fetch';
 
 
