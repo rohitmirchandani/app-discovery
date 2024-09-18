@@ -14,14 +14,14 @@ const Components = {
                 {content}
             </ReactMarkdown>
             <div className = {styles.author}>
-                <Avatar className = {styles.avatar}>{user.name.charAt(0).toUpperCase()}</Avatar>
-                <span>By <strong>{user.name}</strong></span>
-                <FiberManualRecordIcon className = {styles.dot}/>
+                <Avatar className = {styles.avatar}>{user?.name.charAt(0).toUpperCase()}</Avatar>
+                <span>By <strong>{user?.name}</strong></span>
+                {createdAt && <><FiberManualRecordIcon className = {styles.dot}/>
                 <span>{new Date(createdAt).toLocaleDateString('en-GB', {
                     day: '2-digit',
                     month: 'short',
                     year: 'numeric',
-                })}</span>
+                })}</span></>}
             </div>
         </div>
     ), 
