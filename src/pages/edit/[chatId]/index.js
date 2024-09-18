@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import AIresponse from '@/components/AIresponse/AIresponse';
 import Chatbot from '@/components/ChatBot/ChatBot';
 import styles from './chatPage.module.css';
@@ -7,6 +6,7 @@ import Protected from '@/components/protected';
 import { getAllPreviousMessages } from '@/utils/apis/chatbotapis';
 import { getIntegrations } from '@/services/integrationServices';
 import { getUserDataFromLocalStorage } from '@/utils/storageHelper';
+import React , { useState, useEffect } from 'react';
 const blogService = require('@/services/blogServices');
 
 
@@ -14,9 +14,14 @@ const blogService = require('@/services/blogServices');
 export async function getServerSideProps(context) {
   const {chatId} = context.params;
   const blogData = await blogService.default.getBlogById(chatId); // default ko samajhna
-  return {props : {
-   blogData
-  }}
+  const props = {blogData};
+  try{
+    const integrations = await getIntegrations(blogData.apps);
+    props.integrations = integrations;
+  }catch(error){
+    console.error('Error fetching integrations:', error);
+  }
+  return {props};
 }
 export function safeParse (json){
   try {
@@ -27,7 +32,7 @@ export function safeParse (json){
   }
 }
 
-export default function ChatPage({ blogData: initBlogData}) {
+export default function ChatPage({ blogData: initBlogData, integrations}) {
   const { chatId } = useRouter().query;
   const [blogData, setBlogData] = useState(initBlogData);
   const [oldBlog, setOldBlog] = useState('');
@@ -35,7 +40,7 @@ export default function ChatPage({ blogData: initBlogData}) {
 
   const [messages, setMessages] = useState([{}]);
   useEffect(() => {
-    ;if (!chatId) return; 
+    if (!chatId) return; 
        ( async ()=>{
         const chatHistoryData = await getAllPreviousMessages(chatId)
         const prevMessages = chatHistoryData.data.map(chat => ({
@@ -62,7 +67,7 @@ export default function ChatPage({ blogData: initBlogData}) {
     <Protected >
     <div>
       <div className={styles.chatPagediv}>
-        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId} user={user}/>
+        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId} user={user} integrations={integrations}/>
         <Chatbot 
           messages={messages}
           setMessages={setMessages}

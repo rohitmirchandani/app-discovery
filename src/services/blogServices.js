@@ -1,4 +1,6 @@
 // services/blogService.js
+ // Ensures the route is run on the experimental-edge Runtimeimport blogService from '@/services/blogServices';
+
 import Blog from '../../models/BlogModel';
 import dbConnect from '../../lib/mongoDb';
 

@@ -82,7 +82,7 @@ export default function Home() {
   );
 
   return (
-    <div>
+    <div className = {styles.postHeaderDiv}>
       <div className = {styles.postHeader}>
         <input
           type="text"
@@ -109,8 +109,8 @@ export default function Home() {
           </div>
         ) : (
           <>
-            {renderBlogsSection(userCreatedBlogs, 'User Blogs')}
-            {renderBlogsSection(otherBlogs, 'All Blogs')}
+            {renderBlogsSection(userCreatedBlogs, 'Your categories')}
+            {renderBlogsSection(otherBlogs, 'Top Categories')}
           </>
         )}
       </div>
