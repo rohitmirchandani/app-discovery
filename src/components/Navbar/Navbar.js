@@ -5,16 +5,17 @@ import { useRouter } from 'next/router';
 
 import styles from "@/components/Navbar/Navbar.module.css";
 import UserDetail from '../UserDetailPopup/UserDetailPopup';
-import { getUserDataFromLocalStorage } from '@/utils/storageHelper';
+import { useUser } from '@/context/UserContext';
 
 export default function Navbar() {
     const router = useRouter();
+    const { user, loading } = useUser();
 
     const [showUserInfo, setShowUserInfo] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
-        setIsLoggedIn(getUserDataFromLocalStorage() ? true : false)
-    })
+        setIsLoggedIn(user ? true : false)
+    }, [user])
 
     const toggleUserInfo = () => {
         setShowUserInfo(!showUserInfo);
@@ -30,7 +31,7 @@ export default function Navbar() {
             <div className={styles.appName}>
                 <Link className={styles.AppName} href="/">App Discovery</Link>
             </div>
-            <div className={styles.userIconContainer}>
+            {!loading && <div className={styles.userIconContainer}>
                 {isLoggedIn ? (
                     <>
                         <FaUserCircle size={32} onClick={toggleUserInfo} />
@@ -41,7 +42,7 @@ export default function Navbar() {
                         Sign In
                     </button>
                 )}
-            </div>
+            </div>}
         </nav>
     );
 }

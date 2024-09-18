@@ -1,21 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from "@/components/UserDetailPopup/UserDetailPopup.module.css";
-import { clearUserData, getUserDataFromLocalStorage } from '@/utils/storageHelper';
-import { useRouter } from 'next/router';
+import { clearUserData } from '@/utils/storageHelper';
+import { useUser } from '@/context/UserContext';
 
 const UserDetail = ({ isOpen, onClose }) => {
-    const [user, setUser] = useState(null);
+    const {user , setUser}=useUser();
     const popupRef = useRef(null);
-    const router = useRouter();
 
-    useEffect(() => {
-        if (isOpen) {
-            const userData = getUserDataFromLocalStorage();
-            if (userData) {
-                setUser(userData);
-            } 
-        }
-    }, [isOpen]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -31,12 +22,12 @@ const UserDetail = ({ isOpen, onClose }) => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [isOpen, onClose]);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
 
         clearUserData();
-        setUser('');
+        setUser(null);
         onClose();
-        router.push("/");
+
     };
 
     if (!isOpen) return null;

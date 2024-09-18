@@ -7,12 +7,12 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET':
       try {
-        const { user, userEmail } = query;
+        const { user, userId } = query;
         let blogs;
         if (user === 'true') {
-          blogs = await blogServices.getUserBlogs(userEmail);
+          blogs = await blogServices.getUserBlogs(userId);
         } else if (user === 'false') {
-          blogs = await blogServices.getOtherBlogs(userEmail);
+          blogs = await blogServices.getOtherBlogs(userId);
         } else {
           blogs = await blogServices.getAllBlogs();
         }

@@ -4,8 +4,9 @@ import styles from './chatPage.module.css';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected';
 import { getAllPreviousMessages } from '@/utils/apis/chatbotapis';
-import { getIntegrations } from '@/services/integrationServices';
-import { getUserDataFromLocalStorage } from '@/utils/storageHelper';
+import { useUser } from '@/context/UserContext';
+import React , { useState, useEffect } from 'react';
+import { fetchIntegrations } from '@/utils/apiHelper';
 const blogService = require('@/services/blogServices');
 
 
@@ -13,9 +14,14 @@ const blogService = require('@/services/blogServices');
 export async function getServerSideProps(context) {
   const {chatId} = context.params;
   const blogData = await blogService.default.getBlogById(chatId); // default ko samajhna
-  return {props : {
-   blogData
-  }}
+  const props = {blogData};
+  // try{
+    // const integrations = await getIntegrations(blogData.apps);
+    // props.integrations = integrations;
+  // }catch(error){
+  //   console.error('Error fetching integrations:', error);
+  // }
+  return {props};
 }
 export function safeParse (json){
   try {
@@ -30,11 +36,22 @@ export default function ChatPage({ blogData: initBlogData}) {
   const { chatId } = useRouter().query;
   const [blogData, setBlogData] = useState(initBlogData);
   const [oldBlog, setOldBlog] = useState('');
-  const [user,setUser]= useState('');
+  const {user}= useUser();
+  const [integrations, setIntegrations] = useState(null);
+  useEffect(() => {
+    const   getData = async (apps) => {
+        const data = await fetchIntegrations(apps)
+        setIntegrations(data);
+      
+    }
+    if (blogData?.apps) {
+      getData(blogData?.apps)
+    }
+  }, [blogData?.apps]);
 
   const [messages, setMessages] = useState([{}]);
   useEffect(() => {
-    ;if (!chatId) return; 
+    if (!chatId) return; 
        ( async ()=>{
         const chatHistoryData = await getAllPreviousMessages(chatId)
         const prevMessages = chatHistoryData.data.map(chat => ({
@@ -49,19 +66,15 @@ export default function ChatPage({ blogData: initBlogData}) {
     const lastMessage = messages[messages.length - 1];
     if(lastMessage?.role == 'assistant'){
       const content = lastMessage.content;
-      if(content.markdown)
-        setOldBlog(blogData);
+      if(content?.blog)
         setBlogData(content);
     }
   }, [messages])
-  useEffect(()=>{
-    setUser(getUserDataFromLocalStorage());
-  },[])
   return (
     <Protected >
     <div>
       <div className={styles.chatPagediv}>
-        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId} user={user}/>
+        <AIresponse blogData = {blogData} oldBlog={oldBlog} isEditable={true} chatId = {chatId} user={user} integrations={integrations} setOldBlog={setOldBlog}/>
         <Chatbot 
           messages={messages}
           setMessages={setMessages}

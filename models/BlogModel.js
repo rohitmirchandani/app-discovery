@@ -10,10 +10,7 @@ const BlogSchema = new mongoose.Schema({
     type: Date,
     default: new Date(),
   },
-  createdBy: {
-    userName: {type: String },
-    userEmail: {type : String }
-  }
+  createdBy: Number
 });
 
 export default mongoose.models?.Blog || mongoose.model('Blog', BlogSchema);

@@ -5,7 +5,7 @@ import Blog from '@/components/Blog/Blog';
 import styles from './home.module.css';
 import { createChat, fetchBlogs } from '@/utils/apiHelper';
 import { toast } from 'react-toastify';
-import { getUserDataFromLocalStorage } from '@/utils/storageHelper';
+import { useUser } from '@/context/UserContext';
 
 export default function Home() {
   const router = useRouter();
@@ -13,18 +13,18 @@ export default function Home() {
   const [otherBlogs, setOtherBlogs] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const [user, setUser] = useState('');
+  const {user, setUser} = useUser();
   const [loading, setLoading] = useState(true);  // Loader state
 
   // Fetch blogs
   useEffect(() => {
-    async function fetchBlogsData(userEmail) {
+    async function fetchBlogsData(userId) {
       setLoading(true);
         
 
       try {
-        const userBlogs = await fetchBlogs(userEmail, true);
-        const otherBlogs = await fetchBlogs(userEmail, false);
+        const userBlogs = await fetchBlogs(userId, true);
+        const otherBlogs = await fetchBlogs(userId, false);
     
         setUserCreatedBlogs(userBlogs.data);
         setOtherBlogs(otherBlogs.data);
@@ -35,8 +35,7 @@ export default function Home() {
         setLoading(false);  // Stop loader
       }
     }
-
-      fetchBlogsData(user?.email || '');
+      fetchBlogsData(user?.id || '');
   }, [user]);
 
   // Search filtering
@@ -51,10 +50,6 @@ export default function Home() {
       setSearchResults([]);
     }
   }, [searchQuery, userCreatedBlogs, otherBlogs]);
-  useEffect(()=>{
-    setUser(getUserDataFromLocalStorage());
-
-  },[])
 
   // Handle chat creation
   const handleCreateChat = async () => {
@@ -82,7 +77,7 @@ export default function Home() {
   );
 
   return (
-    <div>
+    <div className = {styles.postHeaderDiv}>
       <div className = {styles.postHeader}>
         <input
           type="text"
@@ -109,8 +104,8 @@ export default function Home() {
           </div>
         ) : (
           <>
-            {renderBlogsSection(userCreatedBlogs, 'User Blogs')}
-            {renderBlogsSection(otherBlogs, 'All Blogs')}
+            {renderBlogsSection(userCreatedBlogs, 'Your categories')}
+            {renderBlogsSection(otherBlogs, 'Top Categories')}
           </>
         )}
       </div>

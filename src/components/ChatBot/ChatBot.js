@@ -42,7 +42,7 @@ const Chatbot = ({ messages, setMessages, chatId, setBlogData }) => {
       <div className={styles.chatWindow}>
         {messages.map((message, index) => {
           const isBot = message.role === 'assistant';
-          const clickable = isBot && message?.content?.markdown;
+          const clickable = isBot && message?.content?.blog;
           return (
             <div
               key={index}

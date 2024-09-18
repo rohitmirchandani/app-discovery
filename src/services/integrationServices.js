@@ -33,25 +33,28 @@ async function getIntegrations(pluginNames){
             }
         )
     })).then(res => {
-        return res
-          .filter((res) => res.status === "fulfilled")
-          .map((res) => res.value.data)
-          .filter((res) => res.combinations?.length)
+        return Object.fromEntries(
+          res
+            .map((res, idx) => [plugins[idx].name.toLowerCase(), res])
+            .filter((res) => res[1].status === "fulfilled")
+            .map((res) => [res[0], res[1].value.data])
+        );
     })
-    const integrations = [], pluginData = {};
-    for(let integration of allIntegrations) {
-        Object.assign(pluginData, integration.plugins);
-    }
-    let i = 0, count = new Set([-1]);
-    while(integrations.length < 5 && count.has(i/allIntegrations.length-1)){
-        let integrationIdx = i % allIntegrations.length, combinationIdx = i / allIntegrations.length;
-        if(allIntegrations[integrationIdx]?.combinations?.[combinationIdx]){
-            integrations.push(allIntegrations[integrationIdx]?.combinations?.[combinationIdx]);
-            count.add(combinationIdx);
-        }
-        i++;
-    }
-    return {integrations, pluginData};
+    return allIntegrations;
+    // const integrations = [], pluginData = {};
+    // for(let integration of allIntegrations) {
+    //     Object.assign(pluginData, integration.plugins);
+    // }
+    // let i = 0, count = new Set([-1]);
+    // while(integrations.length < 5 && count.has(i/allIntegrations.length-1)){
+    //     let integrationIdx = i % allIntegrations.length, combinationIdx = i / allIntegrations.length;
+    //     if(allIntegrations[integrationIdx]?.combinations?.[combinationIdx]){
+    //         integrations.push(allIntegrations[integrationIdx]?.combinations?.[combinationIdx]);
+    //         count.add(combinationIdx);
+    //     }
+    //     i++;
+    // }
+    // return {integrations, pluginData};
 }
 async function alertMissingPlugins(plugins){
     await axios.put(`${process.env.DBDASH_URL}/66e3d66c31fab5e9d2693958/tblwed90e`, 

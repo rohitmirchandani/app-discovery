@@ -55,9 +55,9 @@ export const createChat = async () => {
 
   return res.json();
 };
-export const fetchBlogs = async (userEmail, isUserSpecific) => {
+export const fetchBlogs = async (userId, isUserSpecific) => {
   const queryParam = isUserSpecific ? 'true' : 'false';
-  const res = await fetch(`/api/blog?user=${queryParam}&userEmail=${encodeURIComponent(userEmail)}`);
+  const res = await fetch(`/api/blog?user=${queryParam}&userId=${encodeURIComponent(userId)}`);
   
   if (!res.ok) {
     throw new Error(`Failed to fetch ${isUserSpecific ? 'user' : 'other'} blogs`);
@@ -169,5 +169,27 @@ export const getUserById = async (id) => {
   } catch (error) {
     console.error('Error fetching user data:', error);
     return null; 
+  }
+};
+
+export const fetchIntegrations = async (pluginNames) => {
+  try {
+    const response = await fetch(`/api/integrations`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ pluginNames: pluginNames })
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch integrations: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    
+    return data?.data;
+  } catch (error) {
+    console.error('Error fetching integrations:', error);
   }
 };

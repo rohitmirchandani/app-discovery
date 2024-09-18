@@ -3,20 +3,20 @@ import { List, Avatar, Link } from '@mui/material';
 import React from 'react';
 import styles from './Integerations.module.scss';
 
-const Integrations = ({ integrations, pluginData }) => {
-  if (!integrations?.length) return null;  
+const Integrations = ({ integrations }) => {
+  if (!integrations?.combinations?.length) return null;  
   return (
     <div className={styles.integrationDiv}>
-        <h3 className = {styles.integrationHeading}>Top Integrations with the following apps.. </h3>
+        <h3 className = {styles.integrationHeading}>Top Integrations... </h3>
         <List className = {styles.integrationList}>
-            {integrations?.map((integration, index) => (
+            {integrations?.combinations?.slice(0, 5).map((integration, index) => (
                 <li key={index} className = {styles.integrationItem}>
                   <div className = {styles.integrationIcons}>
-                    <Avatar alt={integration.trigger.name} src={pluginData[integration.trigger.name].iconurl || ''} variant = 'square'/>
-                    <Avatar alt={integration.actions[0].name} src={pluginData[integration.actions[0].name].iconurl || ''} variant = 'square'/>
+                    <Avatar alt={integration.trigger.name} src={integrations.plugins[integration.trigger.name].iconurl || ''} variant = 'square'/>
+                    <Avatar alt={integration.actions[0].name} src={integrations.plugins[integration.actions[0].name].iconurl || ''} variant = 'square'/>
                   </div>
-                  <h5 className = {styles.integrationName}>{integration.description}</h5>
-                  <Link className = {styles.integrationLink}>Try It</Link>
+                  <p className = {styles.integrationName}>{integration.description}</p>
+                  <Link className = {styles.integrationLink}>Try It <span>{'>'}</span></Link>
                 </li>
             ))}
         </List>
