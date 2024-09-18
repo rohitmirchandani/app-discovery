@@ -1,5 +1,3 @@
-"useclient";
-export const runtime = 'edge'; // Ensures the route is run on the Edge Runtimeimport blogService from '@/services/blogServices';
 import AIresponse from '@/components/AIresponse/AIresponse';
 import Integrations from '@/components/Integrations/Integrations';
 import { getIntegrations, getPluginsByName } from '@/services/integrationServices';

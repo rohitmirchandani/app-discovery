@@ -1,6 +1,3 @@
-// pages/api/blogs.js 
-export const runtime = 'edge'; // Ensures the route is run on the Edge Runtime
-
 import blogServices from '@/services/blogServices';
 
 export default async function handler(req, res) {
