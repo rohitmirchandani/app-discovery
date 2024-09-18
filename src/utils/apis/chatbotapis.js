@@ -1,5 +1,5 @@
 
-
+export const maxDuration = 300
 import axios from "../interceptor";
 
 export const sendMessageApi = async (content, chatId) => {
