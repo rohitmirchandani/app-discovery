@@ -4,7 +4,7 @@ import styles from './chatPage.module.css';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected';
 import { getAllPreviousMessages } from '@/utils/apis/chatbotapis';
-import { getIntegrations } from '@/services/integrationServices';
+// import { getIntegrations } from '@/services/integrationServices';
 import { useUser } from '@/context/UserContext';
 import React , { useState, useEffect } from 'react';
 const blogService = require('@/services/blogServices');
@@ -15,12 +15,12 @@ export async function getServerSideProps(context) {
   const {chatId} = context.params;
   const blogData = await blogService.default.getBlogById(chatId); // default ko samajhna
   const props = {blogData};
-  try{
-    const integrations = await getIntegrations(blogData.apps);
-    props.integrations = integrations;
-  }catch(error){
-    console.error('Error fetching integrations:', error);
-  }
+  // try{
+    // const integrations = await getIntegrations(blogData.apps);
+    // props.integrations = integrations;
+  // }catch(error){
+  //   console.error('Error fetching integrations:', error);
+  // }
   return {props};
 }
 export function safeParse (json){
