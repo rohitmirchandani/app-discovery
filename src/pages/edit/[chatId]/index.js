@@ -16,8 +16,8 @@ export async function getServerSideProps(context) {
   const blogData = await blogService.default.getBlogById(chatId); // default ko samajhna
   const props = {blogData};
   // try{
-  //   const integrations = await getIntegrations(blogData.apps);
-  //   props.integrations = integrations;
+    // const integrations = await getIntegrations(blogData.apps);
+    // props.integrations = integrations;
   // }catch(error){
   //   console.error('Error fetching integrations:', error);
   // }
@@ -38,14 +38,18 @@ export default function ChatPage({ blogData: initBlogData}) {
   const [oldBlog, setOldBlog] = useState('');
   const {user}= useUser();
   const [integrations, setIntegrations] = useState(null);
-  useEffect(async() => {
-    if (blogData?.apps) {
+  useEffect(() => {
+    const   fetchIntegrations = async (apps) => {
       try {
-        const data =  await getIntegrations(blogData?.apps)
+        const data =  await getIntegrations(apps)
         setIntegrations(data);
       } catch (error) {
         console.log(error)
       }
+      
+    }
+    if (blogData?.apps) {
+      fetchIntegrations(blogData?.apps)
     }
   }, [blogData?.apps]);
 

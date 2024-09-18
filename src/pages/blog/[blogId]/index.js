@@ -27,14 +27,18 @@ export async function getServerSideProps(context) {
 
 export default function ChatPage({ blog, user}) {
   const [integrations, setIntegrations] = useState(null);
-  useEffect(async() => {
-    if (blog?.apps) {
+  useEffect(() => {
+    const   fetchIntegrations = async (apps) => {
       try {
-        const data =  await getIntegrations(blog.apps)
+        const data =  await getIntegrations(apps)
         setIntegrations(data);
       } catch (error) {
         console.log(error)
       }
+      
+    }
+    if (blog?.apps) {
+      fetchIntegrations(blog?.apps)
     }
   }, [blog?.apps]);
   return (
