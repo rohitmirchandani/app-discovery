@@ -1,5 +1,3 @@
-"useclient"
-export const runtime = 'edge'; // Ensures the route is run on the Edge Runtime
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router';
 import WithAuth from '@/components/auth/WithAuth';

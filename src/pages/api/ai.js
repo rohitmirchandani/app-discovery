@@ -1,7 +1,3 @@
-// const axios = require('axios');
-// pages/api/posts.js
-export const runtime = 'edge'; // Ensures the route is run on the Edge Runtime
-
 function handler(req, res) {
   const dummyData = [
     { id: 1, title: 'Post One', body: 'This is the first post' },
