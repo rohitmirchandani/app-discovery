@@ -15,12 +15,12 @@ export async function getServerSideProps(context) {
   const {chatId} = context.params;
   const blogData = await blogService.default.getBlogById(chatId); // default ko samajhna
   const props = {blogData};
-  try{
-    const integrations = await getIntegrations(blogData.apps);
-    props.integrations = integrations;
-  }catch(error){
-    console.error('Error fetching integrations:', error);
-  }
+  // try{
+  //   const integrations = await getIntegrations(blogData.apps);
+  //   props.integrations = integrations;
+  // }catch(error){
+  //   console.error('Error fetching integrations:', error);
+  // }
   return {props};
 }
 export function safeParse (json){
@@ -32,11 +32,22 @@ export function safeParse (json){
   }
 }
 
-export default function ChatPage({ blogData: initBlogData, integrations}) {
+export default function ChatPage({ blogData: initBlogData}) {
   const { chatId } = useRouter().query;
   const [blogData, setBlogData] = useState(initBlogData);
   const [oldBlog, setOldBlog] = useState('');
   const {user}= useUser();
+  const [integrations, setIntegrations] = useState(null);
+  useEffect(async() => {
+    if (blogData?.apps) {
+      try {
+        const data =  await getIntegrations(blogData?.apps)
+        setIntegrations(data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }, [blogData?.apps]);
 
   const [messages, setMessages] = useState([{}]);
   useEffect(() => {
