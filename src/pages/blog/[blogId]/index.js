@@ -1,8 +1,7 @@
 import AIresponse from '@/components/AIresponse/AIresponse';
 import Integrations from '@/components/Integrations/Integrations';
 import blogServices from '@/services/blogServices';
-import { getIntegrations } from '@/services/integrationServices';
-import { getUserById } from '@/utils/apiHelper';
+import { fetchIntegrations, getUserById } from '@/utils/apiHelper';
 import styles from './blogPage.module.scss';
 import { useEffect, useState } from 'react';
 export async function getServerSideProps(context) {
@@ -28,17 +27,13 @@ export async function getServerSideProps(context) {
 export default function ChatPage({ blog, user}) {
   const [integrations, setIntegrations] = useState(null);
   useEffect(() => {
-    const   fetchIntegrations = async (apps) => {
-      try {
-        const data =  await getIntegrations(apps)
+    const   getData = async (apps) => {
+        const data = await fetchIntegrations(apps)
         setIntegrations(data);
-      } catch (error) {
-        console.log(error)
-      }
       
     }
     if (blog?.apps) {
-      fetchIntegrations(blog?.apps)
+      getData(blog?.apps)
     }
   }, [blog?.apps]);
   return (

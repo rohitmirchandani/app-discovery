@@ -1,14 +1,14 @@
 const axios = require('axios');
 
 async function getPluginsByName(pluginNames){
-    const url = `${process.env.NEXT_PUBLIC_NEXT_DBDASH_URL}/${process.env.NEXT_PUBLIC_NEXT_PLUGINS_DBID}/${process.env.NEXT_PUBLIC_NEXT_PLUGINS_TABLEID}`
+    const url = `${process.env.DBDASH_URL}/${process.env.PLUGINS_DBID}/${process.env.PLUGINS_TABLEID}`
     const plugins = await axios.get(url, {
         params: {
             filter: `name ILIKE ANY (ARRAY[${pluginNames.map(p => `'${p}'`)}]) AND audience = 'Public' AND status = 'published'`,
             fields: ['appslugname', 'name']
         }, 
         headers: {
-            'auth-key' : process.env.NEXT_PUBLIC_NEXT_PLUGINS_AUTHKEY    
+            'auth-key' : process.env.PLUGINS_AUTHKEY    
         }
     }).catch(err => {
         console.log(err);
@@ -28,7 +28,7 @@ async function getIntegrations(pluginNames){
                     service: plugin.appslugname
                 },
                 headers: {
-                    'auth-key' : process.env.NEXT_PUBLIC_NEXT_RECOMM_AUTHKEY
+                    'auth-key' : process.env.RECOMM_AUTHKEY
                 }
             }
         )
@@ -57,7 +57,7 @@ async function getIntegrations(pluginNames){
     // return {integrations, pluginData};
 }
 async function alertMissingPlugins(plugins){
-    await axios.put(`${process.env.NEXT_PUBLIC_NEXT_DBDASH_URL}/66e3d66c31fab5e9d2693958/tblwed90e`, 
+    await axios.put(`${process.env.DBDASH_URL}/66e3d66c31fab5e9d2693958/tblwed90e`, 
         {
             uniqueField: 'name',
             rows : plugins.map(plugin => ({
@@ -66,7 +66,7 @@ async function alertMissingPlugins(plugins){
         }, 
         {
             headers : {
-                'auth-key': process.env.NEXT_PUBLIC_NEXT_DBDASH_ALERT_AUTHKEY
+                'auth-key': process.env.DBDASH_ALERT_AUTHKEY
             }
         }
     ).catch(err => console.error('Error in alerting', err));

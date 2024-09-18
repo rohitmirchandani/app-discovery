@@ -4,9 +4,9 @@ import styles from './chatPage.module.css';
 import { useRouter } from 'next/router';
 import Protected from '@/components/protected';
 import { getAllPreviousMessages } from '@/utils/apis/chatbotapis';
-import { getIntegrations } from '@/services/integrationServices';
 import { useUser } from '@/context/UserContext';
 import React , { useState, useEffect } from 'react';
+import { fetchIntegrations } from '@/utils/apiHelper';
 const blogService = require('@/services/blogServices');
 
 
@@ -39,17 +39,13 @@ export default function ChatPage({ blogData: initBlogData}) {
   const {user}= useUser();
   const [integrations, setIntegrations] = useState(null);
   useEffect(() => {
-    const   fetchIntegrations = async (apps) => {
-      try {
-        const data =  await getIntegrations(apps)
+    const   getData = async (apps) => {
+        const data = await fetchIntegrations(apps)
         setIntegrations(data);
-      } catch (error) {
-        console.log(error)
-      }
       
     }
     if (blogData?.apps) {
-      fetchIntegrations(blogData?.apps)
+      getData(blogData?.apps)
     }
   }, [blogData?.apps]);
 
