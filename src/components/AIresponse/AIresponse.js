@@ -9,7 +9,7 @@ import {  publishBlog, updateBlog } from '@/utils/apiHelper';
 import Popup from '../PopupModel/PopupModel';
 import Components from '../BlogComponents/BlogComponents';
 import { compareBlogs } from '@/utils/apis/chatbotapis';
-const AIresponse = ({ blogData, oldBlog, isEditable, chatId, user, setOldBlog }) => {
+const AIresponse = ({ blogData, oldBlog, isEditable, chatId, user, integrations, setOldBlog }) => {
   const [isPopupOpen, setIsPopUpOpen] = useState(false);
   const router = useRouter()
   const hasMarkdown = blogData?.blog;
@@ -69,7 +69,7 @@ const AIresponse = ({ blogData, oldBlog, isEditable, chatId, user, setOldBlog })
         {hasMarkdown && (
           <>
             {
-              blogData.blog.map(({section, content}) => Components[section]?.(content))
+              blogData.blog.map(({section, content}) => Components[section]?.({content, integrations, user, createdAt: blogData.createdAt}))
             }
             <div className={styles.tagsContainer}>
               <h3>Related Tags:</h3>
@@ -80,7 +80,6 @@ const AIresponse = ({ blogData, oldBlog, isEditable, chatId, user, setOldBlog })
               ))}
             </div>
             <ChatFooter
-              userName={user?.name}
               onPublish={handlePublish}
               isEditable={isEditable}
             />
